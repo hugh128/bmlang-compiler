@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+:root {
+  --background:             220 20% 97%;
+  --foreground:             220 25% 12%;
+  --card:                   0 0% 100%;
+  --card-foreground:        220 25% 12%;
+  --popover:                0 0% 100%;
+  --popover-foreground:     220 25% 12%;
+  --primary:                158 64% 38%;
+  --primary-foreground:     0 0% 100%;
+  --secondary:              220 16% 92%;
+  --secondary-foreground:   220 25% 20%;
+  --muted:                  220 16% 92%;
+  --muted-foreground:       220 12% 48%;
+  --accent:                 158 40% 92%;
+  --accent-foreground:      158 64% 28%;
+  --destructive:            4 86% 58%;
+  --destructive-foreground: 0 0% 100%;
+  --border:                 220 16% 86%;
+  --input:                  220 16% 86%;
+  --ring:                   158 64% 38%;
+  --radius:                 0.45rem;
+
+  /* IDE tokens — light */
+  --toolbar-bg:   #f0f2f5;
+  --editor-bg:    #ffffff;
+  --output-bg:    #f5f7fa;
+  --tab-active:   #ffffff;
+  --tab-inactive: #e8ecf2;
+  --gutter-bg:    #f7f8fb;
+
+  --c-green:      #1a9e6e;
+  --c-green-dim:  #1a9e6e22;
+  --c-teal:       #0d8a7a;
+  --c-blue:       #2563a8;
+  --c-blue-dim:   #2563a820;
+  --c-amber:      #c07a10;
+  --c-red:        #d63b3b;
+  --c-red-dim:    #d63b3b18;
+  --c-slate:      #64748b;
+}
+
+.dark {
+  --background:             222 28% 8%;
+  --foreground:             215 20% 88%;
+  --card:                   222 28% 10%;
+  --card-foreground:        215 20% 88%;
+  --popover:                222 28% 10%;
+  --popover-foreground:     215 20% 88%;
+  --primary:                158 56% 42%;
+  --primary-foreground:     0 0% 100%;
+  --secondary:              220 20% 15%;
+  --secondary-foreground:   215 20% 88%;
+  --muted:                  220 20% 15%;
+  --muted-foreground:       215 14% 50%;
+  --accent:                 158 30% 16%;
+  --accent-foreground:      158 56% 55%;
+  --destructive:            4 72% 48%;
+  --destructive-foreground: 0 0% 100%;
+  --border:                 220 20% 17%;
+  --input:                  220 20% 17%;
+  --ring:                   158 56% 42%;
+
+  /* IDE tokens — dark */
+  --toolbar-bg:   #0d1117;
+  --editor-bg:    #0d1117;
+  --output-bg:    #090d12;
+  --tab-active:   #141b22;
+  --tab-inactive: #0d1117;
+  --gutter-bg:    #0b1016;
+
+  --c-green:      #3dd68c;
+  --c-green-dim:  #3dd68c20;
+  --c-teal:       #2dd4bf;
+  --c-blue:       #60a5fa;
+  --c-blue-dim:   #60a5fa18;
+  --c-amber:      #fbbf24;
+  --c-red:        #f87171;
+  --c-red-dim:    #f8717118;
+  --c-slate:      #94a3b8;
+}
+
+@theme inline {
+  --color-background:            hsl(var(--background));
+  --color-foreground:            hsl(var(--foreground));
+  --color-primary:               hsl(var(--primary));
+  --color-primary-foreground:    hsl(var(--primary-foreground));
+  --color-secondary:             hsl(var(--secondary));
+  --color-secondary-foreground:  hsl(var(--secondary-foreground));
+  --color-muted:                 hsl(var(--muted));
+  --color-muted-foreground:      hsl(var(--muted-foreground));
+  --color-accent:                hsl(var(--accent));
+  --color-accent-foreground:     hsl(var(--accent-foreground));
+  --color-destructive:           hsl(var(--destructive));
+  --color-destructive-foreground:hsl(var(--destructive-foreground));
+  --color-border:                hsl(var(--border));
+  --color-input:                 hsl(var(--input));
+  --color-ring:                  hsl(var(--ring));
+  --color-card:                  hsl(var(--card));
+  --color-card-foreground:       hsl(var(--card-foreground));
+  --radius-sm:  calc(var(--radius) - 3px);
+  --radius-md:  calc(var(--radius));
+  --radius-lg:  calc(var(--radius) + 3px);
+}
+
+* { border-color: hsl(var(--border)); box-sizing: border-box; }
+body {
+  background: hsl(var(--background));
+  color:      hsl(var(--foreground));
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.5); }

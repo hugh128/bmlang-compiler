@@ -1,0 +1,49 @@
+# ═══════════════════════════════════════════════════════════
+#  .gitignore — BMLang Compiler Project
+# ═══════════════════════════════════════════════════════════
+
+# ── Compilador C (generados por make) ───────────────────────
+compiler/src/bmlang.tab.c
+compiler/src/bmlang.tab.h
+compiler/src/lex.yy.c
+compiler/bin/bmlang
+compiler/bin/
+
+# ── API NestJS ───────────────────────────────────────────────
+api/dist/
+api/node_modules/
+api/.env
+api/.env.local
+api/.env.production
+
+# ── IDE Next.js ──────────────────────────────────────────────
+ide/.next/
+ide/node_modules/
+ide/.env.local
+ide/.env
+ide/.env.production
+
+# ── Sistema operativo ────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+
+# ── Editores ─────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Logs ─────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Archivos temporales del compilador ──────────────────────
+/tmp/bmlang_*
