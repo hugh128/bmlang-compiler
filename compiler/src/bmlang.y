@@ -6,7 +6,7 @@
 
 void yyerror(const char *msg);
 int  yylex(void);
-extern int linea;
+extern int yylineno;
 
 /* ── Generador de temporales y etiquetas ── */
 static int temp_count  = 0;
@@ -239,7 +239,7 @@ factor
 %%
 
 void yyerror(const char *msg) {
-    fprintf(stderr, "Error sintactico (linea %d): %s\n", linea, msg);
+    fprintf(stderr, "Error sintactico (linea %d): %s\n", yylineno, msg);
 }
 
 int main(int argc, char *argv[]) {

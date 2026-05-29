@@ -3,11 +3,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-int linea = 1;
 %}
 
 %option noyywrap
+%option yylineno
+%option noinput
+%option nounput
+
+%x COMMENT
 
 LETRA    [a-zA-Z]
 DIGITO   [0-9]
@@ -16,29 +19,15 @@ NUMERO   {DIGITO}+
 
 %%
 
-"/*"    {
-            int c;
-            while (1) {
-                c = input();
-                if (c == '\n') linea++;
-                if (c == '*') {
-                    c = input();
-                    if (c == '/') break;
-                    if (c == '\n') linea++;
-                    if (c == EOF) {
-                        fprintf(stderr, "Error lexico (linea %d): comentario sin cerrar\n", linea);
-                        break;
-                    }
-                }
-                if (c == EOF) {
-                    fprintf(stderr, "Error lexico (linea %d): comentario sin cerrar\n", linea);
-                    break;
-                }
-            }
-        }
+    /* ---- Gestion de Comentarios ---- */
+"/*"                 { BEGIN(COMMENT); }
+<COMMENT>"*/"        { BEGIN(INITIAL); }
+<COMMENT>.|\n        { /* Ignorar todo lo que esté dentro del comentario */ }
+<COMMENT><<EOF>>     { fprintf(stderr, "Error lexico (linea %d): comentario sin cerrar\n", yylineno); 
+                        yyterminate(); 
+                     }
 
-\n          { linea++; }
-[ \t\r]+    { /* ignorar espacios */ }
+[ \t\r\n]+    { /* ignorar espacios y saltos */ }
 
 "MAIN"      { return MAIN;   }
 "DEC"       { return DEC;    }
@@ -82,7 +71,7 @@ NUMERO   {DIGITO}+
             }
 
 .           {
-                fprintf(stderr, "Error lexico (linea %d): caracter desconocido '%s'\n", linea, yytext);
+                fprintf(stderr, "Error lexico (linea %d): caracter desconocido '%s'\n", yylineno, yytext);
             }
 
 %%
