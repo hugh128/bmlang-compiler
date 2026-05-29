@@ -1,63 +1,64 @@
 "use client"
 import { useState, useCallback } from "react"
+import axios, { AxiosError } from "axios"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api"
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api",
+  headers: { "Content-Type": "application/json" },
+})
 
 export interface CompileResult {
-  success: boolean
-  output: string
-  errors: string
+  success:  boolean
+  output:   string
+  errors:   string
   duration: number
 }
 
 export function useCompiler() {
-  const [result, setResult]     = useState<CompileResult | null>(null)
-  const [loading, setLoading]   = useState(false)
-  const [error, setError]       = useState<string | null>(null)
+  const [result, setResult]   = useState<CompileResult | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError]     = useState<string | null>(null)
 
+  // Extrae el mensaje de error
+  const extractError = (err: unknown): string => {
+    if (err instanceof AxiosError)
+      return err.response?.data?.message ?? `Error ${err.response?.status}`
+    if (err instanceof Error)
+      return err.message
+    return "Error al conectar con la API"
+  }
+
+  // Compila código enviado como texto plano
   const compile = useCallback(async (code: string) => {
     if (!code.trim()) return
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${API_URL}/compiler/compile`, {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ code }),
-      })
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.message ?? `Error ${res.status}`)
-      }
-      const data: CompileResult = await res.json()
+      const { data } = await api.post<CompileResult>("/compiler/compile", { code })
       setResult(data)
-    } catch (err: any) {
-      setError(err.message ?? "Error al conectar con la API")
+    } catch (err) {
+      setError(extractError(err))
     } finally {
       setLoading(false)
     }
   }, [])
 
+  // Compila un archivo .ml subido por el usuario
   const compileFile = useCallback(async (file: File) => {
     setLoading(true)
     setError(null)
     try {
       const form = new FormData()
       form.append("file", file)
-      const res = await fetch(`${API_URL}/compiler/compile-file`, {
-        method: "POST",
-        body:   form,
+
+      const { data } = await api.post<CompileResult>("/compiler/compile-file", form, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.message ?? `Error ${res.status}`)
-      }
-      const data: CompileResult = await res.json()
+
       setResult(data)
-      // Devolver el contenido del archivo para mostrarlo en el editor
       return await file.text()
-    } catch (err: any) {
-      setError(err.message ?? "Error al conectar con la API")
+    } catch (err) {
+      setError(extractError(err))
     } finally {
       setLoading(false)
     }
